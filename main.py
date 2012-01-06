@@ -8,7 +8,6 @@ class branching:
         subsequent branchings, in the newick format. This will make integration
         with other packages easier.
         """
-        # We check if the right or left element is itself a branching
         if hasattr(self.lt,'lt'):
             ltxt = self.lt.__str__()
         else:
@@ -17,7 +16,6 @@ class branching:
             rtxt = self.rt.__str__()
         else:
             rtxt = self.rt
-        # Then plot
         s = '('+ltxt+','+rtxt+')'
         return s
     def has_spe(self,spe):
@@ -49,6 +47,11 @@ class branching:
             self.lt = nbr
         else:
             self.rt = nbr
+    def remove(self,spe):
+        """
+        Remove a species from a branching
+        """
+        return 0
 
 class PhyloTree:
     def __init__(self,ancname='anc'):
@@ -61,8 +64,12 @@ class PhyloTree:
         return s
     def speciate(self,anc,off):
         self.struct.has_spe(anc).update(anc,branching(anc,off))
-        return 0
+    def extinct(self,spe):
+        self.struct.has_spe(spe).remove(spe)
 
 iTree = PhyloTree('0')
 iTree.speciate('0','0_0')
+iTree.speciate('root','1')
+print iTree
+iTree.extinct('root')
 print iTree
