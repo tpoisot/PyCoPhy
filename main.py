@@ -51,10 +51,23 @@ class branching:
         """
         Remove a species from a branching
         """
+        if hasattr(self.rt,'lt'):
+            if self.rt.lt == spe:
+                self.rt = self.rt.rt
+            elif self.rt.rt == spe:
+                self.rt = self.rt.lt
+        if hasattr(self.lt,'lt'):
+            if self.lt.rt == spe:
+                self.lt = self.lt.lt
+            elif self.lt.lt == spe:
+                self.lt = self.lt.rt
         return 0
 
 class PhyloTree:
     def __init__(self,ancname='anc'):
+        """
+        create a new tree with a root and an ancestral species named ancname
+        """
         self.struct = branching('root',ancname)
     def __str__(self):
         """
@@ -65,11 +78,12 @@ class PhyloTree:
     def speciate(self,anc,off):
         self.struct.has_spe(anc).update(anc,branching(anc,off))
     def extinct(self,spe):
-        self.struct.has_spe(spe).remove(spe)
+        self.struct.remove(spe)
 
 iTree = PhyloTree('0')
 iTree.speciate('0','0_0')
 iTree.speciate('root','1')
+iTree.speciate('1','2')
 print iTree
-iTree.extinct('root')
+iTree.extinct('2')
 print iTree
