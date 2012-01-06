@@ -54,13 +54,21 @@ class branching:
         if hasattr(self.rt,'lt'):
             if self.rt.lt == spe:
                 self.rt = self.rt.rt
+                return 1
             elif self.rt.rt == spe:
                 self.rt = self.rt.lt
+                return 1
+            else:
+                self.rt.remove(spe)
         if hasattr(self.lt,'lt'):
             if self.lt.rt == spe:
                 self.lt = self.lt.lt
+                return 1
             elif self.lt.lt == spe:
                 self.lt = self.lt.rt
+                return 1
+            else:
+                self.lt.remove(spe)
         return 0
 
 class PhyloTree:
@@ -82,8 +90,9 @@ class PhyloTree:
 
 iTree = PhyloTree('0')
 iTree.speciate('0','0_0')
+iTree.extinct('0')
 iTree.speciate('root','1')
 iTree.speciate('1','2')
-print iTree
-iTree.extinct('2')
+iTree.speciate('0_0','3')
+iTree.extinct('1')
 print iTree
