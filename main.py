@@ -87,12 +87,25 @@ class PhyloTree:
         self.struct.has_spe(anc).update(anc,branching(anc,off))
     def extinct(self,spe):
         self.struct.remove(spe)
+    def split(self,anc,d1,d2):
+        self.struct.has_spe(anc).update(anc,branching(anc,d1))
+        self.struct.has_spe(anc).update(anc,branching(anc,d2))
+        self.struct.remove(anc)
 
 iTree = PhyloTree('0')
 iTree.speciate('0','0_0')
+print iTree
 iTree.extinct('0')
 iTree.speciate('root','1')
 iTree.speciate('1','2')
 iTree.speciate('0_0','3')
+print iTree
+iTree.split('3','a','b')
+print iTree
 iTree.extinct('1')
+print iTree
+
+iTree = PhyloTree('0')
+iTree.split('0','1','2')
+iTree.extinct('2')
 print iTree
